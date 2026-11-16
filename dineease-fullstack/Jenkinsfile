@@ -24,7 +24,7 @@ pipeline {
 
         stage('Build React Frontend') {
             steps {
-                dir('dineease-fullstack/frontend') { {
+                dir('dineease-fullstack/frontend') { 
                     bat 'npm ci'
                     bat 'npm run build'
                 }
@@ -33,7 +33,7 @@ pipeline {
 
         stage('Build Spring Boot Backend') {
             steps {
-                dir('dineease-fullstack/backend') { {
+                dir('dineease-fullstack/backend') { 
                     bat 'mvn -B clean package'
                 }
             }
