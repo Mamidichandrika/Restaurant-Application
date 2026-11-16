@@ -58,7 +58,7 @@ pipeline {
 
     post {
         success {
-            echo 'SUCCESS: DineEase CI pipeline completed!'
+            echo 'SUCCESS: DineEase automatic CI pipeline completed!'
         }
 
         failure {
