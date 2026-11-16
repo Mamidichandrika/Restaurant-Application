@@ -1,0 +1,60 @@
+
+pipeline {
+    agent any
+
+    options {
+        skipDefaultCheckout(true)
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Check Tools') {
+            steps {
+                bat 'java -version'
+                bat 'node -v'
+                bat 'npm -v'
+                bat 'mvn -v'
+            }
+        }
+
+        stage('Build React Frontend') {
+            steps {
+                dir('frontend') {
+                    bat 'npm ci'
+                    bat 'npm run build'
+                }
+            }
+        }
+
+        stage('Build Spring Boot Backend') {
+            steps {
+                dir('backend') {
+                    bat 'mvn -B clean package'
+                }
+            }
+        }
+
+        stage('Archive JAR') {
+            steps {
+                archiveArtifacts(
+                    artifacts: 'backend/target/*.jar',
+                    fingerprint: true
+                )
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'DineEase CI build completed successfully!'
+        }
+        failure {
+            echo 'DineEase CI build failed. Check Console Output.'
+        }
+    }
+}
