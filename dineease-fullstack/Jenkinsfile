@@ -4,6 +4,7 @@ pipeline {
 
     options {
         skipDefaultCheckout(true)
+        timestamps()
     }
 
     stages {
@@ -24,7 +25,7 @@ pipeline {
 
         stage('Build React Frontend') {
             steps {
-                dir('dineease-fullstack/frontend') { 
+                dir('dineease-fullstack/frontend') {
                     bat 'npm ci'
                     bat 'npm run build'
                 }
@@ -33,7 +34,7 @@ pipeline {
 
         stage('Build Spring Boot Backend') {
             steps {
-                dir('dineease-fullstack/backend') { 
+                dir('dineease-fullstack/backend') {
                     bat 'mvn -B clean package'
                 }
             }
@@ -42,7 +43,7 @@ pipeline {
         stage('Archive JAR') {
             steps {
                 archiveArtifacts(
-                    artifacts: artifacts: 'dineease-fullstack/backend/target/*.jar',
+                    artifacts: 'dineease-fullstack/backend/target/*.jar',
                     fingerprint: true
                 )
             }
@@ -51,10 +52,15 @@ pipeline {
 
     post {
         success {
-            echo 'DineEase CI build completed successfully!'
+            echo 'SUCCESS: DineEase CI pipeline completed!'
         }
+
         failure {
-            echo 'DineEase CI build failed. Check Console Output.'
+            echo 'FAILURE: Check the Jenkins Console Output.'
+        }
+
+        always {
+            echo 'DineEase pipeline execution finished.'
         }
     }
 }
