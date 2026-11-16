@@ -54,11 +54,19 @@ pipeline {
                 )
             }
         }
+
+        stage('Deploy DineEase') {
+            steps {
+                bat '''
+                    powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\\DineEase-Deployment\\scripts\\deploy-dineease.ps1" -SourceJar "%WORKSPACE%\\dineease-fullstack\\backend\\target\\dineease-backend-1.0.0.jar"
+                '''
+            }
+        }
     }
 
     post {
         success {
-            echo 'SUCCESS: DineEase automatic CI pipeline completed!'
+            echo 'SUCCESS: DineEase CI/CD pipeline completed!'
         }
 
         failure {
