@@ -7,6 +7,12 @@ pipeline {
         timestamps()
     }
 
+    environment {
+        JAVA_HOME = 'C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.21.9-hotspot'
+        MAVEN_HOME = 'C:\\apache-maven-3.9.9'
+        PATH = "${JAVA_HOME}\\bin;${MAVEN_HOME}\\bin;${env.PATH}"
+    }
+
     stages {
         stage('Checkout Code') {
             steps {
@@ -57,10 +63,6 @@ pipeline {
 
         failure {
             echo 'FAILURE: Check the Jenkins Console Output.'
-        }
-
-        always {
-            echo 'DineEase pipeline execution finished.'
         }
     }
 }
